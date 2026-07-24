@@ -8,6 +8,27 @@
 
 A search engine built from scratch using **Rust + React + Elasticsearch**, covering all the fundamental stages of a real search engine: crawling, indexing, searching, and displaying results.
 
+## 🧭 Current Status: Phase 1 — Crawler
+
+The first milestone is now focused on the crawler itself. The project already has a small but meaningful pipeline:
+
+1. Start from a seed URL.
+2. Fetch the page HTML.
+3. Parse the page to extract useful content and discover new links.
+4. Keep a queue of URLs to visit next.
+5. Respect robots.txt and avoid hammering the same host.
+
+At this stage, the crawler does not yet store data in Elasticsearch. It prints the extracted page information to the terminal, which is a good stepping stone before the indexing step.
+
+### How the pieces fit together
+
+- [crawler/src/main.rs](crawler/src/main.rs) is the orchestrator. It creates the work queue, the fetcher, the robots checker, and the rate limiter, then spawns worker tasks.
+- [crawler/src/fetcher.rs](crawler/src/fetcher.rs) fetches HTML from the web using a configured HTTP client.
+- [crawler/src/parser.rs](crawler/src/parser.rs) extracts the title, description, body text, and outbound links from each page.
+- [crawler/src/queue.rs](crawler/src/queue.rs) keeps track of which URLs have already been seen and which ones are still pending.
+- [crawler/src/robots.rs](crawler/src/robots.rs) enforces robots.txt access rules and pacing between requests to the same host.
+- [crawler/src/indexer.rs](crawler/src/indexer.rs) is the placeholder for the next phase: sending page data to Elasticsearch.
+
 ---
 
 ## 🛠️ Tech Stack
@@ -143,6 +164,8 @@ axios
 | 3 | Send page content from the crawler | REST API / `elasticsearch` crate |
 | 4 | Text analysis for partial search | ES Analyzers |
 | 5 | Periodic index updates | `tokio` scheduled tasks |
+
+We are starting this phase with a simple local index file so the crawler can persist content before we connect to Elasticsearch. The next step will be to replace that file-based sink with a live Elasticsearch index.
 
 ---
 
