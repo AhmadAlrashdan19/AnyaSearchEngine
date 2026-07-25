@@ -157,7 +157,7 @@ async fn crawl_page(
 
     let html = fetcher.fetch(url).await?;
     let parsed = parser::parse_page(&html, url, allowed_host);
-    indexer::index_page(&parsed);
+    indexer::index_page(&parsed).await;
 
     {
         let mut queue = queue.lock().await;

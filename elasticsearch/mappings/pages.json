@@ -1,0 +1,35 @@
+{
+    "settings": {
+        "analysis": {
+            "analyzer": {
+                "default": {
+                    "type": "custom",
+                    "tokenizer": "standard",
+                    "filter": ["lowercase", "asciifolding", "stop"]
+                }
+            }
+        }
+    },
+    "mappings":{
+        "properties": {
+            "url": { "type": "keyword" },
+            "title": {
+                "type": "text",
+                "analyzer": "ayna_text_analyzer",
+                "fields": {
+                    "raw": { "type": "keyword" }
+                }
+            },
+            "description": {
+                "type": "text",
+                "analyzer": "ayna_text_analyzer"
+            },
+            "content": {
+                "type": "text",
+                "analyzer": "ayna_text_analyzer"
+            },
+            "links": { "type": "integer" },
+            "indexed_at": { "type": "date" }
+        }
+    }
+}
