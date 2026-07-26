@@ -6,11 +6,16 @@
                     "type": "custom",
                     "tokenizer": "standard",
                     "filter": ["lowercase", "asciifolding", "stop"]
+                },
+                "ayna_text_analyzer": {
+                    "type": "custom",
+                    "tokenizer": "standard",
+                    "filter": ["lowercase", "asciifolding", "stop"]
                 }
             }
         }
     },
-    "mappings":{
+    "mappings": {
         "properties": {
             "url": { "type": "keyword" },
             "title": {
