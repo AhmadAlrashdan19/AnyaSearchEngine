@@ -140,9 +140,12 @@ async fn crawl_page(
     rate_limiter: Arc<Mutex<DomainRateLimiter>>,
     pages_crawled: Arc<Mutex<usize>>,
 ) -> Result<()> {
-    {
+    let sleep_for = {
         let mut limiter = rate_limiter.lock().await;
-        limiter.wait_for_domain(url).await?;
+        limiter.reserve_slot(url).await?
+    };
+    if !sleep_for.is_zero() {
+        tokio::time::sleep(sleep_for).await;
     }
 
     let allowed = {

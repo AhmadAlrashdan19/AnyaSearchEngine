@@ -60,21 +60,25 @@ impl DomainRateLimiter {
         }
     }
 
-    pub async fn wait_for_domain(&mut self, url: &str) -> Result<()> {
+    // Computes how long to wait for this domain and records the request time.
+    // Does NOT sleep itself — caller must await the returned duration
+    // *after* releasing any lock on this limiter, or concurrency is lost.
+    pub async fn reserve_slot(&mut self, url: &str) -> Result<Duration> {
         let host = Url::parse(url)
             .context("invalid URL for rate limiting")?
             .host_str()
             .context("URL missing host for rate limiting")?
             .to_string();
 
-        if let Some(last_request) = self.last_request.get(&host) {
-            let elapsed = last_request.elapsed();
-            if elapsed < self.min_delay {
-                tokio::time::sleep(self.min_delay - elapsed).await;
+        let wait = match self.last_request.get(&host) {
+            Some(last_request) => {
+                let elapsed = last_request.elapsed();
+                self.min_delay.saturating_sub(elapsed)
             }
-        }
+            None => Duration::ZERO,
+        };
 
         self.last_request.insert(host, Instant::now());
-        Ok(())
+        Ok(wait)
     }
 }
