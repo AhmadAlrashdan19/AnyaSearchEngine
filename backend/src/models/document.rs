@@ -41,6 +41,6 @@ impl From<(Document, f32)> for SearchResult {
 #[derive(Debug)]
 pub struct SearchResponse {
     pub query: String,
-    pub totle: usize,
+    pub total: usize,
     pub results: Vec<SearchResult>,
 }
