@@ -174,7 +174,7 @@ We are starting this phase with a simple local index file so the crawler can per
 | # | Step | Tools |
 |---|---|---|
 | 1 | Set up Rust project | `cargo new backend` |
-| 2 | Create search endpoint `GET /search?q=` | `axum` routing |
+| 2 | Create search endpoint `GET /search?query=` | `axum` routing |
 | 3 | Connect to Elasticsearch and forward queries | `reqwest` |
 | 4 | Format results as clean JSON | `serde`, `serde_json` |
 | 5 | Configure CORS | `tower-http` |
