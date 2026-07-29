@@ -5,6 +5,7 @@ use serde_json::{json, Value};
 use std::env;
 
 const DEFAULT_ELASTICSEARCH_URL: &str = "http://127.0.0.1:9200";
+const DEFAULT_ELASTICSEARCH_INDEX: &str = "ayna_pages";
 
 pub struct EsClient {
     reqwest_client: Client,
@@ -26,7 +27,10 @@ impl EsClient {
         from: usize,
         size: usize,
     ) -> Result<(usize, Vec<(Document, f32)>)> {
-        let url = format!("ayna_pages/_search/{}", self.base_url);
+        let url = format!("{}/{}/_search",
+            self.base_url,
+            env::var("ELASTICSEARCH_INDEX").unwrap_or_else(|_| DEFAULT_ELASTICSEARCH_INDEX.to_string())
+        );
         let body = json!({
             "from": from,
             "size": size,

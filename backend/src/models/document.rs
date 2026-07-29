@@ -18,7 +18,7 @@ pub struct Document {
 }
 
 /// Single search resulte, back to the frontend
-#[derive(Debug)]
+#[derive(Debug, Serialize)]
 pub struct SearchResult {
     pub url: String,
     pub title: String,
@@ -38,7 +38,7 @@ impl From<(Document, f32)> for SearchResult {
 }
 
 /// Full response on GET /search
-#[derive(Debug)]
+#[derive(Debug, Serialize)]
 pub struct SearchResponse {
     pub query: String,
     pub total: usize,

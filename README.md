@@ -114,7 +114,7 @@ frontend ──────────→  backend (port 3000)
 ### Rust — Crawler
 ```toml
 [dependencies]
-reqwest  = { version = "0.11", features = ["json"] }
+reqwest  = { version = "0.12", default-features = false, features = ["json", "rust-tls"] }
 scraper  = "0.17"
 tokio    = { version = "1", features = ["full"] }
 ```
@@ -122,7 +122,7 @@ tokio    = { version = "1", features = ["full"] }
 ### Rust — Backend
 ```toml
 [dependencies]
-axum        = "0.7"
+axum        = { version = "0.7" features = ["macros"] }
 tokio       = { version = "1", features = ["full"] }
 serde       = { version = "1", features = ["derive"] }
 serde_json  = "1"
