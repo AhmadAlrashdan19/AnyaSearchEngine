@@ -1,5 +1,6 @@
 use crate::models::Document;
 use anyhow::{Context, Result};
+use axum::routing::trace;
 use reqwest::Client;
 use serde_json::{json, Value};
 use std::env;
@@ -10,6 +11,7 @@ const DEFAULT_ELASTICSEARCH_INDEX: &str = "ayna_pages";
 pub struct EsClient {
     reqwest_client: Client,
     base_url: String,
+    es_index: String,
 }
 
 impl EsClient {
@@ -18,6 +20,8 @@ impl EsClient {
             reqwest_client: Client::new(),
             base_url: env::var("ELASTICSEARCH_URL")
                 .unwrap_or_else(|_| DEFAULT_ELASTICSEARCH_URL.to_string()),
+            es_index: env::var("ELASTICSEARCH_INDEX")
+                .unwrap_or_else(|_| DEFAULT_ELASTICSEARCH_INDEX.to_string())
         }
     }
 
@@ -29,7 +33,7 @@ impl EsClient {
     ) -> Result<(usize, Vec<(Document, f32)>)> {
         let url = format!("{}/{}/_search",
             self.base_url,
-            env::var("ELASTICSEARCH_INDEX").unwrap_or_else(|_| DEFAULT_ELASTICSEARCH_INDEX.to_string())
+            self.es_index
         );
         let body = json!({
             "from": from,
@@ -51,8 +55,6 @@ impl EsClient {
         
         if !response.status().is_success() {
             anyhow::bail!("Elasticsearch request failed with status: {}", response.status());
-        } else {
-            println!("Elasticsearch request succeeded with status: {}", response.status());
         }
         
         let payload: Value = response
