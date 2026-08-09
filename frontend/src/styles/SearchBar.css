@@ -1,0 +1,54 @@
+@import url('https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@400..700&display=swap');
+
+.reem-kufi-logo {
+  font-family: "Reem Kufi", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 700;
+  font-style: normal;
+}
+
+section {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 2rem;
+  background: linear-gradient(180deg, var(--color-platinum-950), var(--color-granite-900));
+  color: var(--color-platinum-50);
+}
+
+section > div {
+  width: min(100%, 46rem);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  background: rgba(17, 24, 39, 0.88);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 1.5rem;
+  padding: 0.5rem;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.25);
+}
+
+input {
+  flex: 1 1 18rem;
+  min-width: 16rem;
+  padding: 1rem 1.25rem;
+  border-radius: 1rem;
+  border: 1px solid var(--color-platinum-600);
+  background: rgba(255, 255, 255, 0.07);
+  color: var(--color-platinum-50);
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+}
+
+input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+input:focus {
+  border-color: var(--color-carrot-orange-500);
+  background: rgba(255, 255, 255, 0.12);
+}
